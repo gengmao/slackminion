@@ -9,6 +9,12 @@ class ThreadedSlackClient(SlackClient):
         super(ThreadedSlackClient, self).__init__(*args, **kwargs)
         self.server = ThreadedServer(self.token, False)
 
+    def rtm_connect(self):
+        '''
+        Throw exception if hit error.
+        '''
+        self.server.rtm_connect()
+        return True
 
 class ThreadedServer(Server):
     def __init__(self, *args, **kwargs):
