@@ -47,6 +47,9 @@ class Bot(object):
                 'startup_time': 0
             }
 
+        if self.config and self.config['debug'] == 'True':
+            self.log.setLevel(logging.DEBUG)
+
         from slackminion.plugins.core import version
         self.version = version
         try:
@@ -97,6 +100,7 @@ class Bot(object):
             while self.runnable:
                 if self.reconnect_needed:
                     if not self.sc.rtm_connect():
+                        self.log.error("Failed to create rtm connection to slack. Quit")
                         return False
                     self.reconnect_needed = False
                     if first_connect:
